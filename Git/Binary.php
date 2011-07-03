@@ -22,7 +22,7 @@
  * along with glip.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Xaav\GitBundle\Git;;
+namespace Xaav\GitBundle\Git;
 
 final class Binary
 {

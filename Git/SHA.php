@@ -18,7 +18,7 @@
  * along with glip.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Xaav\GitBundle\Git;;
+namespace Xaav\GitBundle\Git;
 
 /**
 * SHA regulates all SHA strings used in Glip
