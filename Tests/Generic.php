@@ -8,6 +8,8 @@ use Xaav\GitBundle\Git\Git;
 // git clone git://github.com/redotheoffice/glip.git
 $repo = new Git(dirname(__FILE__).'/glip/.git');
 
+die();
+
 
 // When using array access on a Git object, it will return a branch object, named by the key you provide
 // Currently GLIP is unable to produce a list of available branches, see TODO list.
