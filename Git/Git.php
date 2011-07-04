@@ -20,6 +20,8 @@
 
 namespace Xaav\GitBundle\Git;
 
+use Xaav\GitBundle\File\Directory;
+
 class Git implements \ArrayAccess
 {
   protected
@@ -111,6 +113,7 @@ class Git implements \ArrayAccess
     }
 
     $this->packs = array();
+    new Directory(sprintf('%s/objects/pack', $this->dir));
     $dh = opendir(sprintf('%s/objects/pack', $this->dir));
     while (($entry = readdir($dh)) !== FALSE)
       if (preg_match('#^pack-([0-9a-fA-F]{40})\.idx$#', $entry, $m))
