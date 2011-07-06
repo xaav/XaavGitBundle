@@ -13,10 +13,7 @@ class File extends Object
 
     public function setContents($contents)
     {
-        if(!is_dir(dirname($this->location)))
-        {
-            $this->makeDirectory(dirname($this->location));
-        }
+        $this->makeDirectory(dirname($this->location));
         if(!file_put_contents($this->location, $contents))
         {
             throw new \UnexpectedValueException(sprintf('%s could not be written to', $this->location));

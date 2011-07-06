@@ -20,6 +20,8 @@
 
 namespace Xaav\GitBundle\Git;
 
+use Xaav\GitBundle\File\File;
+
 class GitBranch implements \ArrayAccess
 {
   protected
@@ -157,6 +159,10 @@ class GitBranch implements \ArrayAccess
 
     $subpath = sprintf('refs/heads/%s', $this->branchName);
     $path = sprintf('%s/%s', $this->git->getDir(), $subpath);
+
+    $file = new File($path);
+    $file->setContents('');
+
     if (file_exists($path))
     {
       $sha = substr(file_get_contents($path),0,40);

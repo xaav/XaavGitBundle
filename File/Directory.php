@@ -6,6 +6,6 @@ class Directory extends Object
 {
     public function __construct($location)
     {
-        $this->makeDirectory($location);
+        $this->makeDirectory(realpath($location));
     }
 }
