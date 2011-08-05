@@ -134,7 +134,7 @@ class GitObject
      */
     public function write()
     {
-	$sha1 = sha1_hex($this->name);
+	$sha1 = Binary::sha1_hex($this->name);
 	$path = sprintf('%s/objects/%s/%s', $this->repo->dir, substr($sha1, 0, 2), substr($sha1, 2));
 	if (file_exists($path))
 	    return FALSE;

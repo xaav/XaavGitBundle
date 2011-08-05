@@ -18,37 +18,6 @@
  * along with glip.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('binary.class.php');
-require_once('git_object.class.php');
-require_once('git_blob.class.php');
-require_once('git_commit.class.php');
-require_once('git_commit_stamp.class.php');
-require_once('git_tree.class.php');
-
-/**
- * @relates Git
- * @brief Convert a SHA-1 hash from hexadecimal to binary representation.
- *
- * @param $hex (string) The hash in hexadecimal representation.
- * @returns (string) The hash in binary representation.
- */
-function sha1_bin($hex)
-{
-    return pack('H40', $hex);
-}
-
-/**
- * @relates Git
- * @brief Convert a SHA-1 hash from binary to hexadecimal representation.
- *
- * @param $bin (string) The hash in binary representation.
- * @returns (string) The hash in hexadecimal representation.
- */
-function sha1_hex($bin)
-{
-    return bin2hex($bin);
-}
-
 class Git
 {
     public $dir;
@@ -98,7 +67,7 @@ class Git
         if ($dh !== FALSE) {
             while (($entry = readdir($dh)) !== FALSE)
                 if (preg_match('#^pack-([0-9a-fA-F]{40})\.idx$#', $entry, $m))
-                    $this->packs[] = sha1_bin($m[1]);
+                    $this->packs[] = Binary::sha1_bin($m[1]);
             closedir($dh);
         }
     }
@@ -138,7 +107,7 @@ class Git
     {
         foreach ($this->packs as $pack_name)
         {
-            $index = fopen(sprintf('%s/objects/pack/pack-%s.idx', $this->dir, sha1_hex($pack_name)), 'rb');
+            $index = fopen(sprintf('%s/objects/pack/pack-%s.idx', $this->dir, Binary::sha1_hex($pack_name)), 'rb');
             flock($index, LOCK_SH);
 
             /* check version */
@@ -355,7 +324,7 @@ class Git
 
         if (isset($cache[$object_name]))
             return $cache[$object_name];
-	$sha1 = sha1_hex($object_name);
+	$sha1 = Binary::sha1_hex($object_name);
 	$path = sprintf('%s/objects/%s/%s', $this->dir, substr($sha1, 0, 2), substr($sha1, 2));
 	if (file_exists($path))
 	{
@@ -369,7 +338,7 @@ class Git
 	{
             list($pack_name, $object_offset) = $x;
 
-            $pack = fopen(sprintf('%s/objects/pack/pack-%s.pack', $this->dir, sha1_hex($pack_name)), 'rb');
+            $pack = fopen(sprintf('%s/objects/pack/pack-%s.pack', $this->dir, Binary::sha1_hex($pack_name)), 'rb');
             flock($pack, LOCK_SH);
 
             /* check magic and version */
@@ -382,7 +351,7 @@ class Git
             fclose($pack);
 	}
         else
-            throw new Exception(sprintf('object not found: %s', sha1_hex($object_name)));
+            throw new Exception(sprintf('object not found: %s', Binary::sha1_hex($object_name)));
         $cache[$object_name] = $r;
         return $r;
     }
@@ -413,7 +382,7 @@ class Git
 	$subpath = sprintf('refs/heads/%s', $branch);
 	$path = sprintf('%s/%s', $this->dir, $subpath);
 	if (file_exists($path))
-	    return sha1_bin(file_get_contents($path));
+	    return Binary::sha1_bin(file_get_contents($path));
 	$path = sprintf('%s/packed-refs', $this->dir);
 	if (file_exists($path))
 	{
@@ -426,7 +395,7 @@ class Git
 		    continue;
 		$parts = explode(' ', trim($line));
 		if (count($parts) == 2 && $parts[1] == $subpath)
-		    $head = sha1_bin($parts[0]);
+		    $head = Binary::sha1_bin($parts[0]);
 	    }
 	    fclose($f);
 	    if ($head !== NULL)
