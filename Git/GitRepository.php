@@ -67,12 +67,14 @@ class GitRepository
             throw new \Exception(sprintf('not a directory: %s', $dir));
 
 	$this->packs = array();
-	$dh = opendir(sprintf('%s/objects/pack', $this->dir));
-        if ($dh !== FALSE) {
-            while (($entry = readdir($dh)) !== FALSE)
-                if (preg_match('#^pack-([0-9a-fA-F]{40})\.idx$#', $entry, $m))
-                    $this->packs[] = Binary::sha1_bin($m[1]);
-            closedir($dh);
+	if(is_dir($dir = sprintf('%s/objects/pack', $this->dir))) {
+    	$dh = opendir($dir);
+            if ($dh !== FALSE) {
+                while (($entry = readdir($dh)) !== FALSE)
+                    if (preg_match('#^pack-([0-9a-fA-F]{40})\.idx$#', $entry, $m))
+                        $this->packs[] = Binary::sha1_bin($m[1]);
+                closedir($dh);
+            }
         }
     }
 
