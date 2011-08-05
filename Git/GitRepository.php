@@ -426,5 +426,10 @@ class GitRepository
 	}
 	throw new \Exception(sprintf('no such branch: %s', $branch));
     }
+
+    public function getRef($name)
+    {
+        //TODO: Look up ref by name
+    }
 }
 
