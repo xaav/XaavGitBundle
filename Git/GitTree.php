@@ -18,10 +18,7 @@
  * along with glip.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class GitTreeError extends Exception {}
-class GitTreeInvalidPathError extends GitTreeError {}
-
-require_once('git_object.class.php');
+namespace Xaav\GitBundle\Git;
 
 class GitTree extends GitObject
 {
@@ -38,7 +35,7 @@ class GitTree extends GitObject
 	$start = 0;
 	while ($start < strlen($data))
 	{
-	    $node = new stdClass;
+	    $node = new \stdClass;
 
 	    $pos = strpos($data, "\0", $start);
 	    list($node->mode, $node->name) = explode(' ', substr($data, $start, $pos-$start), 2);
@@ -170,7 +167,7 @@ class GitTree extends GitObject
             /* create leaf node */
             if ($mode)
             {
-                $node = new stdClass;
+                $node = new \stdClass;
                 $node->mode = $mode;
                 $node->name = $name;
                 $node->object = $object;
@@ -198,7 +195,7 @@ class GitTree extends GitObject
                 /* create new tree */
                 $subtree = new GitTree($this->repo);
 
-                $node = new stdClass;
+                $node = new \stdClass;
                 $node->mode = 040000;
                 $node->name = $name;
                 $node->is_dir = TRUE;

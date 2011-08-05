@@ -18,8 +18,7 @@
  * along with glip.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('git_object.class.php');
-require_once('git_commit_stamp.class.php');
+namespace Xaav\GitBundle\Git;
 
 class GitCommit extends GitObject
 {

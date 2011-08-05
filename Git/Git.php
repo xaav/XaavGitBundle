@@ -18,6 +18,8 @@
  * along with glip.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Xaav\GitBundle\Git;
+
 class Git
 {
     public $dir;
@@ -40,7 +42,7 @@ class Git
 	    return Git::OBJ_BLOB;
 	else if ($name == 'tag')
 	    return Git::OBJ_TAG;
-	throw new Exception(sprintf('unknown type name: %s', $name));
+	throw new \Exception(sprintf('unknown type name: %s', $name));
     }
 
     static public function getTypeName($type)
@@ -53,14 +55,14 @@ class Git
 	    return 'blob';
 	else if ($type == Git::OBJ_TAG)
 	    return 'tag';
-	throw new Exception(sprintf('no string representation of type %d', $type));
+	throw new \Exception(sprintf('no string representation of type %d', $type));
     }
 
     public function __construct($dir)
     {
         $this->dir = realpath($dir);
         if ($this->dir === FALSE || !@is_dir($this->dir))
-            throw new Exception(sprintf('not a directory: %s', $dir));
+            throw new \Exception(sprintf('not a directory: %s', $dir));
 
 	$this->packs = array();
 	$dh = opendir(sprintf('%s/objects/pack', $this->dir));
@@ -170,14 +172,14 @@ class Git
                         /* packfile > 2 GB. Gee, you really want to handle this
                          * much data with PHP?
                          */
-                        throw new Exception('64-bit packfiles offsets not implemented');
+                        throw new \Exception('64-bit packfiles offsets not implemented');
                     }
 
                     fclose($index);
                     return array($pack_name, $off);
                 }
                 else
-                    throw new Exception('unsupported pack index format');
+                    throw new \Exception('unsupported pack index format');
             }
             fclose($index);
         }
@@ -303,7 +305,7 @@ class Git
             $data = $this->applyDelta($delta, $base);
         }
         else
-            throw new Exception(sprintf('object of unknown type %d', $type));
+            throw new \Exception(sprintf('object of unknown type %d', $type));
 
         return array($type, $data);
     }
@@ -345,13 +347,13 @@ class Git
             $magic = fread($pack, 4);
             $version = Binary::fuint32($pack);
             if ($magic != 'PACK' || $version != 2)
-                throw new Exception('unsupported pack format');
+                throw new \Exception('unsupported pack format');
 
             $r = $this->unpackObject($pack, $object_offset);
             fclose($pack);
 	}
         else
-            throw new Exception(sprintf('object not found: %s', Binary::sha1_hex($object_name)));
+            throw new \Exception(sprintf('object not found: %s', Binary::sha1_hex($object_name)));
         $cache[$object_name] = $r;
         return $r;
     }
@@ -401,7 +403,7 @@ class Git
 	    if ($head !== NULL)
 		return $head;
 	}
-	throw new Exception(sprintf('no such branch: %s', $branch));
+	throw new \Exception(sprintf('no such branch: %s', $branch));
     }
 }
 

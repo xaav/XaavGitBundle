@@ -18,6 +18,8 @@
  * along with glip.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Xaav\GitBundle\Git;
+
 class GitObject
 {
     /**
@@ -58,7 +60,7 @@ class GitObject
 	    return new GitTree($repo);
 	if ($type == Git::OBJ_BLOB)
 	    return new GitBlob($repo);
-	throw new Exception(sprintf('unhandled object type %d', $type));
+	throw new \Exception(sprintf('unhandled object type %d', $type));
     }
 
     /**
