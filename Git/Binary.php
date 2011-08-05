@@ -67,7 +67,7 @@ final class Binary
     * @param $hex (string) The hash in hexadecimal representation.
     * @returns (string) The hash in binary representation.
     */
-    function sha1_bin($hex)
+    static public function sha1_bin($hex)
     {
         return pack('H40', $hex);
     }
@@ -79,7 +79,7 @@ final class Binary
     * @param $bin (string) The hash in binary representation.
     * @returns (string) The hash in hexadecimal representation.
     */
-    function sha1_hex($bin)
+    static public function sha1_hex($bin)
     {
         return bin2hex($bin);
     }
