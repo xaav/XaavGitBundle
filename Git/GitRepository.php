@@ -20,7 +20,7 @@
 
 namespace Xaav\GitBundle\Git;
 
-class Git
+class GitRepository
 {
     public $dir;
 
