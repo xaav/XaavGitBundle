@@ -24,6 +24,8 @@ class GitRepository
 {
     public $dir;
 
+    protected $objects;
+
     const OBJ_NONE = 0;
     const OBJ_COMMIT = 1;
     const OBJ_TREE = 2;
@@ -71,6 +73,25 @@ class GitRepository
                 if (preg_match('#^pack-([0-9a-fA-F]{40})\.idx$#', $entry, $m))
                     $this->packs[] = Binary::sha1_bin($m[1]);
             closedir($dh);
+        }
+    }
+
+    /**
+     * Persists an object to the git repository.
+     */
+    public function persist(GitObject $object)
+    {
+        $this->objects[] = $object;
+    }
+
+    /**
+     * Writes all changes to disk.
+     */
+    public function flush()
+    {
+        foreach ($this->objects as $object)
+        {
+            $object->write();
         }
     }
 
