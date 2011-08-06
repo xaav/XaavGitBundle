@@ -407,7 +407,7 @@ class GitRepository
     	return $this->getRef(sprintf('refs/heads/%s', $branch));
     }
 
-    public function getRef($subpath)
+    public function getRefName($subpath)
     {
         $path = sprintf('%s/%s', $this->dir, $subpath);
     	if (file_exists($path))
@@ -438,10 +438,10 @@ class GitRepository
      *
      * @return GitRef
      */
-    public function getRefObject($subpath)
+    public function getRef($subpath)
     {
         $ref = new GitRef($this);
-        $ref->unserialize(array($this->getRef($subpath), $subpath));
+        $ref->unserialize(array($this->getRefName($subpath), $subpath));
 
         return $ref;
     }

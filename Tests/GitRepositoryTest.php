@@ -23,7 +23,7 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTip()
     {
-        $this->assertEquals($this->repo->getTip(), Binary::sha1_bin('549efd7972e9959fdfef9c02744eabc21913bd7a'));
+        $this->assertEquals($this->repo->getRefName('refs/heads/master'), Binary::sha1_bin('549efd7972e9959fdfef9c02744eabc21913bd7a'));
     }
 
     public function testGetObject()
@@ -38,11 +38,11 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCommitFromRefObject()
     {
-        $this->assertTrue($this->repo->getRefObject('refs/heads/master')->getObject() instanceof GitCommit);
+        $this->assertTrue($this->repo->getRef('refs/heads/master')->getObject() instanceof GitCommit);
     }
 
     public function testGetCommitTreeFromRefObject()
     {
-        $this->assertTrue($this->repo->getRefObject('refs/heads/master')->getObject()->getTree() instanceof GitTree);
+        $this->assertTrue($this->repo->getRef('refs/heads/master')->getObject()->getTree() instanceof GitTree);
     }
 }
