@@ -61,41 +61,41 @@ class GitCommit extends GitObject
 
     public function _unserialize($data)
     {
-	$lines = explode("\n", $data);
-	unset($data);
-	$meta = array('parent' => array());
-	while (($line = array_shift($lines)) != '')
-	{
-	    $parts = explode(' ', $line, 2);
-	    if (!isset($meta[$parts[0]]))
-		$meta[$parts[0]] = array($parts[1]);
-	    else
-		$meta[$parts[0]][] = $parts[1];
-	}
+    	$lines = explode("\n", $data);
+    	unset($data);
+    	$meta = array('parent' => array());
+    	while (($line = array_shift($lines)) != '')
+    	{
+    	    $parts = explode(' ', $line, 2);
+    	    if (!isset($meta[$parts[0]]))
+    		$meta[$parts[0]] = array($parts[1]);
+    	    else
+    		$meta[$parts[0]][] = $parts[1];
+    	}
 
-	$this->tree = Binary::sha1_bin($meta['tree'][0]);
-	$this->parents = array_map('Xaav\GitBundle\Git\Binary::sha1_bin', $meta['parent']);
-	$this->author = new GitCommitStamp;
-	$this->author->unserialize($meta['author'][0]);
-	$this->committer = new GitCommitStamp;
-	$this->committer->unserialize($meta['committer'][0]);
+    	$this->tree = Binary::sha1_bin($meta['tree'][0]);
+    	$this->parents = array_map('Xaav\GitBundle\Git\Binary::sha1_bin', $meta['parent']);
+    	$this->author = new GitCommitStamp;
+    	$this->author->unserialize($meta['author'][0]);
+    	$this->committer = new GitCommitStamp;
+    	$this->committer->unserialize($meta['committer'][0]);
 
-	$this->summary = array_shift($lines);
-	$this->detail = implode("\n", $lines);
+    	$this->summary = array_shift($lines);
+    	$this->detail = implode("\n", $lines);
 
         $this->history = NULL;
     }
 
     public function _serialize()
     {
-	$s = '';
-	$s .= sprintf("tree %s\n", Binary::sha1_hex($this->tree));
-	foreach ($this->parents as $parent)
-	    $s .= sprintf("parent %s\n", Binary::sha1_hex($parent));
-	$s .= sprintf("author %s\n", $this->author->serialize());
-	$s .= sprintf("committer %s\n", $this->committer->serialize());
-	$s .= "\n".$this->summary."\n".$this->detail;
-	return $s;
+    	$s = '';
+    	$s .= sprintf("tree %s\n", Binary::sha1_hex($this->tree));
+    	foreach ($this->parents as $parent)
+    	    $s .= sprintf("parent %s\n", Binary::sha1_hex($parent));
+    	$s .= sprintf("author %s\n", $this->author->serialize());
+    	$s .= sprintf("committer %s\n", $this->committer->serialize());
+    	$s .= "\n".$this->summary."\n".$this->detail;
+    	return $s;
     }
 
     /**

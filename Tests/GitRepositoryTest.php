@@ -35,4 +35,14 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->repo->getRef('refs/heads/master'), $this->repo->getTip('master'));
     }
+
+    public function testGetCommitFromRefObject()
+    {
+        $this->assertTrue($this->repo->getRefObject('refs/heads/master')->getObject() instanceof GitCommit);
+    }
+
+    public function testGetCommitTreeFromRefObject()
+    {
+        $this->assertTrue($this->repo->getRefObject('refs/heads/master')->getObject()->getTree() instanceof GitTree);
+    }
 }

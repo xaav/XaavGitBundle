@@ -37,6 +37,8 @@ class GitRef
 
     /**
      * Gets the object (usually a commit) that this ref points to.
+     *
+     * @return GitCommit
      */
     public function getObject()
     {
