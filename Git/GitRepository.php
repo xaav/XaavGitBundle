@@ -404,34 +404,33 @@ class GitRepository
      */
     public function getTip($branch='master')
     {
-	$subpath = sprintf('refs/heads/%s', $branch);
-	$path = sprintf('%s/%s', $this->dir, $subpath);
-	if (file_exists($path))
-	    return Binary::sha1_bin(file_get_contents($path));
-	$path = sprintf('%s/packed-refs', $this->dir);
-	if (file_exists($path))
-	{
-	    $head = NULL;
-	    $f = fopen($path, 'rb');
-	    flock($f, LOCK_SH);
-	    while ($head === NULL && ($line = fgets($f)) !== FALSE)
-	    {
-		if ($line{0} == '#')
-		    continue;
-		$parts = explode(' ', trim($line));
-		if (count($parts) == 2 && $parts[1] == $subpath)
-		    $head = Binary::sha1_bin($parts[0]);
-	    }
-	    fclose($f);
-	    if ($head !== NULL)
-		return $head;
-	}
-	throw new \Exception(sprintf('no such branch: %s', $branch));
+    	return $this->getRef(sprintf('refs/heads/%s', $branch));
     }
 
-    public function getRef($name)
+    public function getRef($subpath)
     {
-        //TODO: Look up ref by name
+        $path = sprintf('%s/%s', $this->dir, $subpath);
+    	if (file_exists($path))
+    	    return Binary::sha1_bin(file_get_contents($path));
+    	$path = sprintf('%s/packed-refs', $this->dir);
+    	if (file_exists($path))
+    	{
+    	    $head = NULL;
+    	    $f = fopen($path, 'rb');
+    	    flock($f, LOCK_SH);
+    	    while ($head === NULL && ($line = fgets($f)) !== FALSE)
+    	    {
+    		if ($line{0} == '#')
+    		    continue;
+    		$parts = explode(' ', trim($line));
+    		if (count($parts) == 2 && $parts[1] == $subpath)
+    		    $head = Binary::sha1_bin($parts[0]);
+    	    }
+    	    fclose($f);
+    	    if ($head !== NULL)
+    		return $head;
+    	}
+    	throw new \Exception(sprintf('no such branch: %s', $branch));
     }
 }
 

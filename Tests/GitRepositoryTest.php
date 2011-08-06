@@ -30,4 +30,9 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->repo->getObject(Binary::sha1_bin('549efd7972e9959fdfef9c02744eabc21913bd7a')) instanceof GitCommit);
     }
+
+    public function testGetRef()
+    {
+        $this->assertEquals($this->repo->getRef('refs/heads/master'), $this->repo->getTip('master'));
+    }
 }
