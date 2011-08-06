@@ -152,19 +152,6 @@ class GitCommit extends GitObject
         return $this->repo->getObject($this->tree);
     }
 
-    /**
-     * @copybrief GitTree::find()
-     *
-     * This is a convenience function calling GitTree::find() on the commit's
-     * tree.
-     *
-     * @copydetails GitTree::find()
-     */
-    public function find($path)
-    {
-        return $this->getTree()->find($path);
-    }
-
     static public function treeDiff($a, $b)
     {
         return GitTree::treeDiff($a ? $a->getTree() : NULL, $b ? $b->getTree() : NULL);
