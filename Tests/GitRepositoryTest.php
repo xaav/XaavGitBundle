@@ -2,8 +2,8 @@
 
 namespace Xaav\GitBundle\Tests;
 
+use Xaav\GitBundle\Git\GitTree;
 use Xaav\GitBundle\Git\Binary;
-
 use Xaav\GitBundle\Git\GitRepository;
 
 class GitRepositoryTest extends \PHPUnit_Framework_TestCase
@@ -14,5 +14,6 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($repo->getTip('master'), $repo->getTip());
         $this->assertEquals($repo->getTip(), Binary::sha1_bin('549efd7972e9959fdfef9c02744eabc21913bd7a'));
+        $this->assertTrue($repo->getObject(Binary::sha1_bin('549efd7972e9959fdfef9c02744eabc21913bd7a')) instanceof GitTree);
     }
 }
