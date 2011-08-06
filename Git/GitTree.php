@@ -106,6 +106,29 @@ class GitTree extends GitObject
     }
 
     /**
+     * Get all the children of this tree.
+     */
+    public function children()
+    {
+        $children = array();
+        foreach ($this->nodes as $name => $node) {
+            $children[$name] = $this->repo->getObject($node->object);
+        }
+
+        return $children;
+    }
+
+    /**
+     * Get a child matching the specified key.
+     */
+    public function child($key)
+    {
+        $children = $this->children();
+
+        return $children[$key];
+    }
+
+    /**
      * @brief Recursively list the contents of a tree.
      *
      * @returns (array mapping string to string) An array where the keys are

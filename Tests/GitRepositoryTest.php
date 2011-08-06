@@ -45,4 +45,9 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->repo->getRef('refs/heads/master')->getObject()->getTree() instanceof GitTree);
     }
+
+    public function testGetSubtreeFromTree()
+    {
+        $this->assertTrue($this->repo->getRef('refs/heads/master')->getObject()->getTree()->child('folder') instanceof GitTree);
+    }
 }
