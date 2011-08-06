@@ -29,7 +29,7 @@ class GitBlob extends GitObject
 
     public function __construct($repo)
     {
-	parent::__construct($repo, Git::OBJ_BLOB);
+	parent::__construct($repo, GitRepository::OBJ_BLOB);
     }
 
     public function _unserialize($data)

@@ -304,9 +304,9 @@ module Grit
     #   set. The exitstatus is an small integer that was the process's exit
     #   status. The out and err elements are the data written to stdout and
     #   stderr as Strings.
-    # Raises Grit::Git::GitTimeout when the timeout is exceeded or when more
+    # Raises Grit::GitRepository::GitTimeout when the timeout is exceeded or when more
     #   than Grit::Git.git_max_size bytes are output.
-    # Raises Grit::Git::CommandFailed when the :raise option is set true and the
+    # Raises Grit::GitRepository::CommandFailed when the :raise option is set true and the
     #   git command exits with a non-zero exit status. The CommandFailed's #command,
     #   #exitstatus, and #err attributes can be used to retrieve additional
     #   detail about the error.

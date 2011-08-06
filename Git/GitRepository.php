@@ -37,25 +37,25 @@ class GitRepository
     static public function getTypeID($name)
     {
 	if ($name == 'commit')
-	    return Git::OBJ_COMMIT;
+	    return self::OBJ_COMMIT;
 	else if ($name == 'tree')
-	    return Git::OBJ_TREE;
+	    return self::OBJ_TREE;
 	else if ($name == 'blob')
-	    return Git::OBJ_BLOB;
+	    return self::OBJ_BLOB;
 	else if ($name == 'tag')
-	    return Git::OBJ_TAG;
+	    return self::OBJ_TAG;
 	throw new \Exception(sprintf('unknown type name: %s', $name));
     }
 
     static public function getTypeName($type)
     {
-	if ($type == Git::OBJ_COMMIT)
+	if ($type == self::OBJ_COMMIT)
 	    return 'commit';
-	else if ($type == Git::OBJ_TREE)
+	else if ($type == self::OBJ_TREE)
 	    return 'tree';
-	else if ($type == Git::OBJ_BLOB)
+	else if ($type == self::OBJ_BLOB)
 	    return 'blob';
-	else if ($type == Git::OBJ_TAG)
+	else if ($type == self::OBJ_TAG)
 	    return 'tag';
 	throw new \Exception(sprintf('no string representation of type %d', $type));
     }
@@ -276,7 +276,7 @@ class GitRepository
         }
 
         /* compare sha1_file.c:1608 unpack_entry */
-        if ($type == Git::OBJ_COMMIT || $type == Git::OBJ_TREE || $type == Git::OBJ_BLOB || $type == Git::OBJ_TAG)
+        if ($type == self::OBJ_COMMIT || $type == self::OBJ_TREE || $type == self::OBJ_BLOB || $type == self::OBJ_TAG)
         {
             /*
              * We don't know the actual size of the compressed
@@ -288,7 +288,7 @@ class GitRepository
              */
             $data = gzuncompress(fread($pack, $size+512), $size);
         }
-        else if ($type == Git::OBJ_OFS_DELTA)
+        else if ($type == self::OBJ_OFS_DELTA)
         {
             /* 20 = maximum varint length for offset */
             $buf = fread($pack, $size+512+20);
@@ -317,7 +317,7 @@ class GitRepository
 
             $data = $this->applyDelta($delta, $base);
         }
-        else if ($type == Git::OBJ_REF_DELTA)
+        else if ($type == self::OBJ_REF_DELTA)
         {
             $base_name = fread($pack, 20);
             list($type, $base) = $this->getRawObject($base_name);
@@ -356,7 +356,7 @@ class GitRepository
             list($hdr, $object_data) = explode("\0", gzuncompress(file_get_contents($path)), 2);
 
 	    sscanf($hdr, "%s %d", $type, $object_size);
-	    $object_type = Git::getTypeID($type);
+	    $object_type = self::getTypeID($type);
             $r = array($object_type, $object_data);
 	}
 	else if ($x = $this->findPackedObject($object_name))

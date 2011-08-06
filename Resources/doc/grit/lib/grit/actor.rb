@@ -14,7 +14,7 @@ module Grit
     #
     # str - The String in this format: 'John Doe <jdoe@example.com>'
     #
-    # Returns Git::Actor.
+    # Returns GitRepository::Actor.
     def self.from_string(str)
       case str
         when /<.+>/

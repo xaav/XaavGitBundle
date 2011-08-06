@@ -39,8 +39,8 @@ class GitObject
     /**
      * @brief Get the object's type.
      *
-     * @returns (integer) One of Git::OBJ_COMMIT, Git::OBJ_TREE or
-     * GIT::OBJ_BLOB.
+     * @returns (integer) One of GitRepository::OBJ_COMMIT, GitRepository::OBJ_TREE or
+     * GitRepository::OBJ_BLOB.
      */
     public function getType() { return $this->type; }
 
@@ -48,17 +48,17 @@ class GitObject
      * @brief Create a GitObject of the specified type.
      *
      * @param $repo (Git) The repository the object belongs to.
-     * @param $type (integer) Object type (one of Git::OBJ_COMMIT,
-     * Git::OBJ_TREE, Git::OBJ_BLOB).
+     * @param $type (integer) Object type (one of GitRepository::OBJ_COMMIT,
+     * GitRepository::OBJ_TREE, GitRepository::OBJ_BLOB).
      * @returns A new GitCommit, GitTree or GitBlob object respectively.
      */
     static public function create($repo, $type)
     {
-	if ($type == Git::OBJ_COMMIT)
+	if ($type == GitRepository::OBJ_COMMIT)
 	    return new GitCommit($repo);
-	if ($type == Git::OBJ_TREE)
+	if ($type == GitRepository::OBJ_TREE)
 	    return new GitTree($repo);
-	if ($type == Git::OBJ_BLOB)
+	if ($type == GitRepository::OBJ_BLOB)
 	    return new GitBlob($repo);
 	throw new \Exception(sprintf('unhandled object type %d', $type));
     }
@@ -73,7 +73,7 @@ class GitObject
     protected function hash($data)
     {
 	$hash = hash_init('sha1');
-	hash_update($hash, Git::getTypeName($this->type));
+	hash_update($hash, GitRepository::getTypeName($this->type));
 	hash_update($hash, ' ');
 	hash_update($hash, strlen($data));
 	hash_update($hash, "\0");
@@ -85,7 +85,7 @@ class GitObject
      * @brief Internal constructor for use from derived classes.
      *
      * Never use this function except from a derived class. Use the
-     * constructor of a derived class, create() or Git::getObject() instead.
+     * constructor of a derived class, create() or GitRepository::getObject() instead.
      */
     public function __construct($repo, $type)
     {
@@ -147,7 +147,7 @@ class GitObject
 	flock($f, LOCK_EX);
 	ftruncate($f, 0);
 	$data = $this->serialize();
-	$data = Git::getTypeName($this->type).' '.strlen($data)."\0".$data;
+	$data = GitRepository::getTypeName($this->type).' '.strlen($data)."\0".$data;
 	fwrite($f, gzcompress($data));
 	fclose($f);
 	return TRUE;

@@ -56,7 +56,7 @@ class GitCommit extends GitObject
 
     public function __construct($repo)
     {
-	parent::__construct($repo, Git::OBJ_COMMIT);
+	parent::__construct($repo, GitRepository::OBJ_COMMIT);
     }
 
     public function _unserialize($data)
@@ -74,7 +74,7 @@ class GitCommit extends GitObject
 	}
 
 	$this->tree = Binary::sha1_bin($meta['tree'][0]);
-	$this->parents = array_map('Binary::sha1_bin', $meta['parent']);
+	$this->parents = array_map('Xaav\GitBundle\Git\Binary::sha1_bin', $meta['parent']);
 	$this->author = new GitCommitStamp;
 	$this->author->unserialize($meta['author'][0]);
 	$this->committer = new GitCommitStamp;

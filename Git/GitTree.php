@@ -26,7 +26,7 @@ class GitTree extends GitObject
 
     public function __construct($repo)
     {
-	parent::__construct($repo, Git::OBJ_TREE);
+	parent::__construct($repo, GitRepository::OBJ_TREE);
     }
 
     public function _unserialize($data)
