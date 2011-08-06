@@ -9,12 +9,25 @@ use Xaav\GitBundle\Git\GitRepository;
 
 class GitRepositoryTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRepository()
-    {
-        $repo = new GitRepository(__DIR__.'/test.git');
+    protected $repo;
 
-        $this->assertEquals($repo->getTip('master'), $repo->getTip());
-        $this->assertEquals($repo->getTip(), Binary::sha1_bin('549efd7972e9959fdfef9c02744eabc21913bd7a'));
-        $this->assertTrue($repo->getObject(Binary::sha1_bin('549efd7972e9959fdfef9c02744eabc21913bd7a')) instanceof GitCommit);
+    public function setUp()
+    {
+        $this->repo = new GitRepository(__DIR__.'/test.git');
+    }
+
+    public function testAssumeMaster()
+    {
+        $this->assertEquals($this->repo->getTip('master'), $this->repo->getTip());
+    }
+
+    public function testGetTip()
+    {
+        $this->assertEquals($this->repo->getTip(), Binary::sha1_bin('549efd7972e9959fdfef9c02744eabc21913bd7a'));
+    }
+
+    public function testGetObject()
+    {
+        $this->assertTrue($this->repo->getObject(Binary::sha1_bin('549efd7972e9959fdfef9c02744eabc21913bd7a')) instanceof GitCommit);
     }
 }
