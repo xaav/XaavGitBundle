@@ -21,18 +21,28 @@ class GitRef
 
     public function unserialize($data)
     {
-        list($this->hash, $this->name) = $data;
+        $this->hash = $data;
     }
 
     public function serialize()
     {
-        return array($this->hash, $this->name);
+        return $this->hash;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 
     public function write()
     {
         $path = sprintf('%s/%s', $this->repo->dir, $this->name);
-        file_put_contents($path, $this->hash);
+        file_put_contents($path, $this->hash."\n");
     }
 
     /**

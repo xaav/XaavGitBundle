@@ -426,7 +426,8 @@ class GitRepository
     public function getRef($subpath)
     {
         $ref = new GitRef($this);
-        $ref->unserialize(array($this->getRefName($subpath), $subpath));
+        $ref->unserialize($this->getRefName($subpath));
+        $ref->setName($subpath);
 
         return $ref;
     }
@@ -454,7 +455,7 @@ class GitRepository
             if ($head !== NULL)
             return $head;
         }
-        throw new \Exception(sprintf('no such branch: %s', $branch));
+        throw new \RuntimeException(sprintf('Ref %s not found.', $subpath));
     }
 }
 
