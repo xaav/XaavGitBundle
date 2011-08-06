@@ -432,5 +432,18 @@ class GitRepository
     	}
     	throw new \Exception(sprintf('no such branch: %s', $branch));
     }
+
+    /**
+     * Get a PHP representation of the ref
+     *
+     * @return GitRef
+     */
+    public function getRefObject($subpath)
+    {
+        $ref = new GitRef($this);
+        $ref->unserialize(array($this->getRef($subpath), $subpath));
+
+        return $ref;
+    }
 }
 
