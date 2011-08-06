@@ -397,40 +397,25 @@ class GitRepository
     }
 
     /**
-     * @brief Look up a branch.
+     * Look up a branch.
      *
-     * @param $branch (string) The branch to look up, defaulting to @em master.
-     * @returns (string) The tip of the branch (binary sha1).
+     * @param string $branch The branch to look up, defaulting to master.
+     * @return GitRef The tip of the branch.
      */
     public function getTip($branch='master')
     {
     	return $this->getRef(sprintf('refs/heads/%s', $branch));
     }
 
-    public function getRefName($subpath)
+    /**
+     * Look up a tag.
+     *
+     * @param string $tag The name of the tag
+     * @return GitRef The tag specified.
+     */
+    public function getTag($tag)
     {
-        $path = sprintf('%s/%s', $this->dir, $subpath);
-    	if (file_exists($path))
-    	    return Binary::sha1_bin(file_get_contents($path));
-    	$path = sprintf('%s/packed-refs', $this->dir);
-    	if (file_exists($path))
-    	{
-    	    $head = NULL;
-    	    $f = fopen($path, 'rb');
-    	    flock($f, LOCK_SH);
-    	    while ($head === NULL && ($line = fgets($f)) !== FALSE)
-    	    {
-    		if ($line{0} == '#')
-    		    continue;
-    		$parts = explode(' ', trim($line));
-    		if (count($parts) == 2 && $parts[1] == $subpath)
-    		    $head = Binary::sha1_bin($parts[0]);
-    	    }
-    	    fclose($f);
-    	    if ($head !== NULL)
-    		return $head;
-    	}
-    	throw new \Exception(sprintf('no such branch: %s', $branch));
+        return $this->getRef(sprintf('refs/tags/%s', $tag));
     }
 
     /**
@@ -444,6 +429,32 @@ class GitRepository
         $ref->unserialize(array($this->getRefName($subpath), $subpath));
 
         return $ref;
+    }
+
+    public function getRefName($subpath)
+    {
+        $path = sprintf('%s/%s', $this->dir, $subpath);
+        if (file_exists($path))
+        return Binary::sha1_bin(file_get_contents($path));
+        $path = sprintf('%s/packed-refs', $this->dir);
+        if (file_exists($path))
+        {
+            $head = NULL;
+            $f = fopen($path, 'rb');
+            flock($f, LOCK_SH);
+            while ($head === NULL && ($line = fgets($f)) !== FALSE)
+            {
+                if ($line{0} == '#')
+                continue;
+                $parts = explode(' ', trim($line));
+                if (count($parts) == 2 && $parts[1] == $subpath)
+                $head = Binary::sha1_bin($parts[0]);
+            }
+            fclose($f);
+            if ($head !== NULL)
+            return $head;
+        }
+        throw new \Exception(sprintf('no such branch: %s', $branch));
     }
 }
 
