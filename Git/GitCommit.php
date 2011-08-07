@@ -143,9 +143,86 @@ class GitCommit extends GitObject
     }
 
     /**
-     * @brief Get the tree referenced by this commit.
+     * Get the detail of this commit.
+     */
+    public function getDetail()
+    {
+        return $this->detail;
+    }
+
+    /**
+     * Set the detail of this commit.
+     */
+    public function setDetail($detail)
+    {
+        $this->detail = $detail;
+        $this->setModified();
+    }
+
+    /**
+     * Get the summary of this commit.
+     */
+    public function getSummary()
+    {
+        return $this->summary;
+    }
+
+    /**
+     * Set the summary of this commit.s
+     */
+    public function setSummary($summary)
+    {
+        $this->summary = $summary;
+        $this->setModified();
+    }
+
+    /**
+    * Get the commiter of this commit.
+    */
+    public function getCommitter()
+    {
+        return $this->committer;
+    }
+
+    /**
+     * Set the commiter of this commit.
+     */
+    public function setCommitter(GitCommitStamp $committer)
+    {
+        $this->committer = $committer;
+        $this->setModified();
+    }
+
+    /**
+     * Get the author of this commit.
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set the author of this commit.
+     */
+    public function setAuthor(GitCommitStamp $author)
+    {
+        $this->author = $author;
+        $this->setModified();
+    }
+
+    /**
+     * Set the tree refrenced by this commit.
+     */
+    public function setTree(GitTree $tree)
+    {
+        $this->tree = $tree->getName();
+        $this->setModified();
+    }
+
+    /**
+     * Get the tree refrenced by this commit.
      *
-     * @returns The GitTree referenced by this commit.
+     * @return GitTree
      */
     public function getTree()
     {

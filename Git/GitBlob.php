@@ -41,5 +41,16 @@ class GitBlob extends GitObject
     {
 	    return $this->data;
     }
+
+    public function setData($data)
+    {
+        $this->data = $data;
+        $this->setModified();
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
 }
 
