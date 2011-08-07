@@ -430,7 +430,7 @@ class GitRepository
     public function getRef($subpath)
     {
         $ref = new GitRef($this);
-        $ref->unserialize($this->getRefName($subpath));
+        $ref->setObject($this->getObject($this->getRefName($subpath)));
         $ref->setName($subpath);
 
         return $ref;
@@ -486,7 +486,7 @@ class GitRepository
         }
         elseif ($item instanceof GitRef) {
             $path = sprintf('%s/%s', $this->dir, $item->getName());
-            file_put_contents($path, Binary::sha1_hex($item->serialize()));
+            file_put_contents($path, Binary::sha1_hex($item->getObject()->getName()));
         }
     }
 }

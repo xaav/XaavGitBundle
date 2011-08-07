@@ -7,31 +7,13 @@ namespace Xaav\GitBundle\Git;
  */
 class GitRef extends GitItem
 {
-    /**
-     * @var GitRepository
-     */
-    protected $repo;
-    protected $hash;
+    protected $object;
     protected $name;
-
-    public function __construct($repo)
-    {
-        $this->repo = $repo;
-    }
-
-    public function unserialize($data)
-    {
-        $this->hash = $data;
-    }
-
-    public function serialize()
-    {
-        return $this->hash;
-    }
 
     public function setName($name)
     {
         $this->name = $name;
+        $this->setModified();
     }
 
     public function getName()
@@ -46,7 +28,7 @@ class GitRef extends GitItem
      */
     public function getObject()
     {
-        return $this->repo->getObject($this->hash);
+        return $this->object;
     }
 
     /**
@@ -54,6 +36,7 @@ class GitRef extends GitItem
      */
     public function setObject(GitObject $object)
     {
-        $this->hash = $object->getName();
+        $this->object = $object;
+        $this->setModified();
     }
 }
