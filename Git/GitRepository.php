@@ -24,7 +24,7 @@ class GitRepository
 {
     public $dir;
 
-    protected $pending;
+    protected $pending = array();
 
     const OBJ_NONE = 0;
     const OBJ_COMMIT = 1;
@@ -83,7 +83,9 @@ class GitRepository
      */
     public function persist(GitItem $item)
     {
-        $this->pending[] = $item;
+        if(!in_array($item, $this->pending)) {
+            $this->pending[] = $item;
+        }
     }
 
     /**
