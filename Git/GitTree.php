@@ -231,7 +231,13 @@ class GitTree extends GitObject
             $node->object = $subtree->getName();
 
             $pending[] = $subtree;
-            return $pending;
+
+            foreach ($pending as $pendingobject) {
+
+                $this->repo->persist($pendingobject);
+            }
+
+            return array();
         }
     }
 
