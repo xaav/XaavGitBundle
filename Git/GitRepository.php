@@ -94,7 +94,7 @@ class GitRepository
         foreach ($this->objects as $object)
         {
             $object->rehash();
-            $object->write();
+            $this->writeObject($object);
         }
     }
 
@@ -461,7 +461,7 @@ class GitRepository
 
     public function writeObject(GitObject $object)
     {
-        $sha1 = Binary::sha1_hex($object->name);
+        $sha1 = Binary::sha1_hex($object->getName());
         $path = sprintf('%s/objects/%s/%s', $this->dir, substr($sha1, 0, 2), substr($sha1, 2));
         if (file_exists($path))
         return FALSE;
@@ -472,7 +472,7 @@ class GitRepository
         flock($f, LOCK_EX);
         ftruncate($f, 0);
         $data = $object->serialize();
-        $data = self::getTypeName($object->type).' '.strlen($data)."\0".$data;
+        $data = self::getTypeName($object->getType()).' '.strlen($data)."\0".$data;
         fwrite($f, gzcompress($data));
         fclose($f);
         return TRUE;
