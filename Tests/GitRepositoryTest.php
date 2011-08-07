@@ -97,6 +97,8 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
         $ref = $this->repo->getTip();
         $ref->setObject($newcommit);
 
+        $this->repo->persist($ref);
+
         /**
          * Write changes to disk.
          */
@@ -120,7 +122,8 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
          */
 
         $ref->setObject($oldcommit);
-        $ref->write();
+        $this->repo->persist($ref);
+        $this->repo->flush();
 
         /*
          * Have we cleaned up correctly?
