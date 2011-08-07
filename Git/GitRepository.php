@@ -93,6 +93,7 @@ class GitRepository
     {
         foreach ($this->objects as $object)
         {
+            $object->rehash();
             $object->write();
         }
     }
