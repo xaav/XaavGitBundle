@@ -459,6 +459,9 @@ class GitRepository
         throw new \RuntimeException(sprintf('Ref %s not found.', $subpath));
     }
 
+    /**
+     * Writes the specified object to disk.
+     */
     protected function writeObject(GitObject $object)
     {
         $sha1 = Binary::sha1_hex($object->getName());
