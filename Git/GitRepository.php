@@ -24,7 +24,7 @@ class GitRepository
 {
     public $dir;
 
-    protected $pending = array();
+    protected $items = array();
 
     const OBJ_NONE = 0;
     const OBJ_COMMIT = 1;

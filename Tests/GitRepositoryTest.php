@@ -108,6 +108,8 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
          * Then get it back out.
          */
 
+        var_dump($this->repo->getTip());
+
         $contents = $this->repo
             ->getTip()
             ->getObject()
