@@ -57,6 +57,10 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCommitFile()
     {
+        /*
+         * Put the object in.
+         */
+
         $blob = new GitBlob($this->repo);
         $this->repo->persist($blob);
         $blob->data = 'Test Content';
@@ -100,5 +104,17 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->repo->flush();
         $ref->write();
 
+        /*
+         * Then get it back out.
+         */
+
+        $contents = $this->repo
+            ->getTip()
+            ->getObject()
+            ->getTree()
+            ->child('README')
+            ->data;
+
+        $this->assertEquals($contents, 'Test Content');
     }
 }
