@@ -17,6 +17,8 @@ class GitRef extends GitItem
     public function __construct($repo)
     {
         $this->repo = $repo;
+
+        $this->repo->persist($this);
     }
 
     public function unserialize($data)

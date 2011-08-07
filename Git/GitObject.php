@@ -87,10 +87,12 @@ class GitObject extends GitItem
      * Never use this function except from a derived class. Use the
      * constructor of a derived class, create() or GitRepository::getObject() instead.
      */
-    public function __construct($repo, $type)
+    public function __construct(GitRepository $repo, $type)
     {
-	$this->repo = $repo;
-	$this->type = $type;
+    	$this->repo = $repo;
+    	$this->type = $type;
+
+	    $this->repo->persist($this);
     }
 
     /**
