@@ -61,6 +61,8 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
          * Put the object in.
          */
 
+        $oldcommit = $this->repo->getTip()->getObject();
+
         $blob = new GitBlob($this->repo);
         $this->repo->persist($blob);
         $blob->data = 'Test Content';
@@ -116,5 +118,18 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
             ->data;
 
         $this->assertEquals($contents, 'Test Content');
+
+        /*
+         * Clean up.
+         */
+
+        $ref->setObject($oldcommit);
+        $ref->write();
+
+        /*
+         * Have we cleaned up correctly?
+         */
+
+        $this->assertEquals($oldcommit, $this->repo->getTip()->getObject());
     }
 }
