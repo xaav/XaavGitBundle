@@ -468,7 +468,9 @@ class GitRepository
     protected function writeItem(GitItem $item)
     {
         if ($item instanceof GitObject) {
-            $item->rehash();
+            if($item->isModified()) {
+                $item->rehash();
+            }
             $sha1 = Binary::sha1_hex($item->getName());
             $path = sprintf('%s/objects/%s/%s', $this->dir, substr($sha1, 0, 2), substr($sha1, 2));
             if (file_exists($path))

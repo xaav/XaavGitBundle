@@ -157,6 +157,8 @@ class GitCommit extends GitObject
     {
         $this->detail = $detail;
         $this->setModified();
+
+        return $this;
     }
 
     /**
@@ -174,6 +176,8 @@ class GitCommit extends GitObject
     {
         $this->summary = $summary;
         $this->setModified();
+
+        return $this;
     }
 
     /**
@@ -191,6 +195,8 @@ class GitCommit extends GitObject
     {
         $this->committer = $committer;
         $this->setModified();
+
+        return $this;
     }
 
     /**
@@ -208,6 +214,8 @@ class GitCommit extends GitObject
     {
         $this->author = $author;
         $this->setModified();
+
+        return $this;
     }
 
     /**
@@ -217,6 +225,8 @@ class GitCommit extends GitObject
     {
         $this->tree = $tree->getName();
         $this->setModified();
+
+        return $this;
     }
 
     /**
