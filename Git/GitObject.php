@@ -20,7 +20,7 @@
 
 namespace Xaav\GitBundle\Git;
 
-class GitObject
+class GitObject extends GitItem
 {
     /**
      * @brief (Git) The repository this object belongs to.

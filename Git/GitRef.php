@@ -5,7 +5,7 @@ namespace Xaav\GitBundle\Git;
 /**
  * Represents any git ref, including branches.
  */
-class GitRef
+class GitRef extends GitItem
 {
     /**
      * @var GitRepository
@@ -62,4 +62,6 @@ class GitRef
     {
         $this->hash = $object->getName();
     }
+
+    public function rehash() {}
 }

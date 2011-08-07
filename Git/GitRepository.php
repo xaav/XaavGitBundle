@@ -81,9 +81,9 @@ class GitRepository
     /**
      * Persists an object to the git repository.
      */
-    public function persist(GitObject $object)
+    public function persist(GitItem $item)
     {
-        $this->objects[] = $object;
+        $this->objects[] = $item;
     }
 
     /**
@@ -94,8 +94,10 @@ class GitRepository
         foreach ($this->objects as $object)
         {
             $object->rehash();
-            $this->writeObject($object);
+            $this->writeItem($object);
         }
+
+        $this->objects = array();
     }
 
     /**
@@ -460,25 +462,30 @@ class GitRepository
     }
 
     /**
-     * Writes the specified object to disk.
+     * Writes the specified item to disk.
      */
-    protected function writeObject(GitObject $object)
+    protected function writeItem(GitItem $item)
     {
-        $sha1 = Binary::sha1_hex($object->getName());
-        $path = sprintf('%s/objects/%s/%s', $this->dir, substr($sha1, 0, 2), substr($sha1, 2));
-        if (file_exists($path))
-        return FALSE;
-        $dir = dirname($path);
-        if (!is_dir($dir))
-        mkdir(dirname($path), 0770);
-        $f = fopen($path, 'ab');
-        flock($f, LOCK_EX);
-        ftruncate($f, 0);
-        $data = $object->serialize();
-        $data = self::getTypeName($object->getType()).' '.strlen($data)."\0".$data;
-        fwrite($f, gzcompress($data));
-        fclose($f);
-        return TRUE;
+        if ($item instanceof GitObject) {
+            $sha1 = Binary::sha1_hex($item->getName());
+            $path = sprintf('%s/objects/%s/%s', $this->dir, substr($sha1, 0, 2), substr($sha1, 2));
+            if (file_exists($path))
+            return FALSE;
+            $dir = dirname($path);
+            if (!is_dir($dir))
+            mkdir(dirname($path), 0770);
+            $f = fopen($path, 'ab');
+            flock($f, LOCK_EX);
+            ftruncate($f, 0);
+            $data = $item->serialize();
+            $data = self::getTypeName($item->getType()).' '.strlen($data)."\0".$data;
+            fwrite($f, gzcompress($data));
+            fclose($f);
+        }
+        elseif ($item instanceof GitRef) {
+            $path = sprintf('%s/%s', $this->dir, $item->getName());
+            file_put_contents($path, Binary::sha1_hex($item->serialize()));
+        }
     }
 }
 

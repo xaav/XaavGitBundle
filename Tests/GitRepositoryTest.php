@@ -103,8 +103,8 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
         /**
          * Write changes to disk.
          */
+        $this->repo->persist($ref);
         $this->repo->flush();
-        $ref->write();
 
         /*
          * Then get it back out.
