@@ -136,21 +136,21 @@ class GitObject
      */
     public function write()
     {
-	$sha1 = Binary::sha1_hex($this->name);
-	$path = sprintf('%s/objects/%s/%s', $this->repo->dir, substr($sha1, 0, 2), substr($sha1, 2));
-	if (file_exists($path))
-	    return FALSE;
-	$dir = dirname($path);
-	if (!is_dir($dir))
-	    mkdir(dirname($path), 0770);
-	$f = fopen($path, 'ab');
-	flock($f, LOCK_EX);
-	ftruncate($f, 0);
-	$data = $this->serialize();
-	$data = GitRepository::getTypeName($this->type).' '.strlen($data)."\0".$data;
-	fwrite($f, gzcompress($data));
-	fclose($f);
-	return TRUE;
+    	$sha1 = Binary::sha1_hex($this->name);
+    	$path = sprintf('%s/objects/%s/%s', $this->repo->dir, substr($sha1, 0, 2), substr($sha1, 2));
+    	if (file_exists($path))
+    	    return FALSE;
+    	$dir = dirname($path);
+    	if (!is_dir($dir))
+    	    mkdir(dirname($path), 0770);
+    	$f = fopen($path, 'ab');
+    	flock($f, LOCK_EX);
+    	ftruncate($f, 0);
+    	$data = $this->serialize();
+    	$data = GitRepository::getTypeName($this->type).' '.strlen($data)."\0".$data;
+    	fwrite($f, gzcompress($data));
+    	fclose($f);
+    	return TRUE;
     }
 }
 

@@ -458,5 +458,24 @@ class GitRepository
         }
         throw new \RuntimeException(sprintf('Ref %s not found.', $subpath));
     }
+
+    public function writeObject(GitObject $object)
+    {
+        $sha1 = Binary::sha1_hex($object->name);
+        $path = sprintf('%s/objects/%s/%s', $this->dir, substr($sha1, 0, 2), substr($sha1, 2));
+        if (file_exists($path))
+        return FALSE;
+        $dir = dirname($path);
+        if (!is_dir($dir))
+        mkdir(dirname($path), 0770);
+        $f = fopen($path, 'ab');
+        flock($f, LOCK_EX);
+        ftruncate($f, 0);
+        $data = $object->serialize();
+        $data = self::getTypeName($object->type).' '.strlen($data)."\0".$data;
+        fwrite($f, gzcompress($data));
+        fclose($f);
+        return TRUE;
+    }
 }
 
