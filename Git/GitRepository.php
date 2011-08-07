@@ -83,8 +83,8 @@ class GitRepository
      */
     public function persist(GitItem $item)
     {
-        if(!in_array($item, $this->pending)) {
-            $this->pending[] = $item;
+        if(!in_array($item, $this->items)) {
+            $this->items[] = $item;
         }
     }
 
@@ -93,12 +93,12 @@ class GitRepository
      */
     public function flush()
     {
-        foreach ($this->pending as $item)
+        foreach ($this->items as $item)
         {
-            $this->writeItem($item);
+            if($item->isModified()) {
+                $this->writeItem($item);
+            }
         }
-
-        $this->pending = array();
     }
 
     /**

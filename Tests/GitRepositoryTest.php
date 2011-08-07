@@ -122,7 +122,6 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
          */
 
         $ref->setObject($oldcommit);
-        $this->repo->persist($ref);
         $this->repo->flush();
 
         /*
