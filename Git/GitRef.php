@@ -42,7 +42,7 @@ class GitRef
     public function write()
     {
         $path = sprintf('%s/%s', $this->repo->dir, $this->name);
-        file_put_contents($path, $this->hash."\n");
+        file_put_contents($path, $this->hash);
     }
 
     /**
@@ -53,5 +53,13 @@ class GitRef
     public function getObject()
     {
         return $this->repo->getObject($this->hash);
+    }
+
+    /**
+     * Sets the object that this commit points to.
+     */
+    public function setObject(GitObject $object)
+    {
+        $this->hash = $object->getName();
     }
 }
