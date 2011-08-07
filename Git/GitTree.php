@@ -59,7 +59,7 @@ class GitTree extends GitObject
     {
 	$s = '';
         /* git requires nodes to be sorted */
-        uasort($this->nodes, array('GitTree', 'nodecmp'));
+        uasort($this->nodes, array('Xaav\GitBundle\Git\GitTree', 'nodecmp'));
 	foreach ($this->nodes as $node)
 	    $s .= sprintf("%s %s\0%s", base_convert($node->mode, 10, 8), $node->name, $node->object);
 	return $s;

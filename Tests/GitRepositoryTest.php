@@ -2,6 +2,10 @@
 
 namespace Xaav\GitBundle\Tests;
 
+use Xaav\GitBundle\Git\GitCommitStamp;
+
+use Xaav\GitBundle\Git\GitBlob;
+
 use Xaav\GitBundle\Git\GitCommit;
 use Xaav\GitBundle\Git\GitTree;
 use Xaav\GitBundle\Git\Binary;
@@ -51,8 +55,50 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->repo->getRef('refs/heads/master')->getObject()->getTree()->child('folder') instanceof GitTree);
     }
 
-    public function testCommit()
+    public function testCommitFile()
     {
+        $blob = new GitBlob($this->repo);
+        $this->repo->persist($blob);
+        $blob->data = 'Test Content';
+        $blob->rehash();
+
+        $tree = clone $this->repo->getTip()->getObject()->getTree();
+
+        foreach ($tree->updateNode('README', 0100640, $blob->getName()) as $object) {
+            $this->repo->persist($object);
+        }
+
+        $tree->rehash();
+        $this->repo->persist($tree);
+
+        $newcommit = new GitCommit($this->repo);
+        $newcommit->tree = $tree->getName();
+        $newcommit->parents = array($this->repo->getTip()->getObject()->getName());
+
+        $stamp = new GitCommitStamp();
+        $stamp->name = 'Test user';
+        $stamp->email = 'test@test.com';
+        $stamp->time = time();
+
+        $stamp->offset = idate('Z', $stamp->time);
+
+        $newcommit->author = $stamp;
+        $newcommit->committer = $stamp;
+        $newcommit->summary = 'Test summary';
+        $newcommit->detail = 'Test detail';
+
+        $newcommit->rehash();
+
+        $this->repo->persist($newcommit);
+
+        $ref = $this->repo->getTip();
+        $ref->setObject($newcommit);
+
+        /**
+         * Write changes to disk.
+         */
+        $this->repo->flush();
+        $ref->write();
 
     }
 }

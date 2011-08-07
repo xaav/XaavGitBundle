@@ -42,7 +42,7 @@ class GitRef
     public function write()
     {
         $path = sprintf('%s/%s', $this->repo->dir, $this->name);
-        file_put_contents($path, $this->hash);
+        file_put_contents($path, Binary::sha1_hex($this->hash));
     }
 
     /**
