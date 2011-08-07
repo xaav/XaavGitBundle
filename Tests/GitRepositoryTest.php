@@ -64,7 +64,6 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
         $oldcommit = $this->repo->getTip()->getObject();
 
         $blob = new GitBlob($this->repo);
-        $this->repo->persist($blob);
         $blob->data = 'Test Content';
         $blob->rehash();
 
@@ -75,7 +74,6 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
         }
 
         $tree->rehash();
-        $this->repo->persist($tree);
 
         $newcommit = new GitCommit($this->repo);
         $newcommit->tree = $tree->getName();
@@ -95,7 +93,6 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $newcommit->rehash();
 
-        $this->repo->persist($newcommit);
 
         $ref = $this->repo->getTip();
         $ref->setObject($newcommit);
@@ -103,7 +100,6 @@ class GitRepositoryTest extends \PHPUnit_Framework_TestCase
         /**
          * Write changes to disk.
          */
-        $this->repo->persist($ref);
         $this->repo->flush();
 
         /*
