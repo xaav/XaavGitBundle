@@ -62,6 +62,4 @@ class GitRef extends GitItem
     {
         $this->hash = $object->getName();
     }
-
-    public function rehash() {}
 }

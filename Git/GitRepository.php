@@ -24,7 +24,7 @@ class GitRepository
 {
     public $dir;
 
-    protected $objects;
+    protected $pending;
 
     const OBJ_NONE = 0;
     const OBJ_COMMIT = 1;
@@ -83,7 +83,7 @@ class GitRepository
      */
     public function persist(GitItem $item)
     {
-        $this->objects[] = $item;
+        $this->pending[] = $item;
     }
 
     /**
@@ -91,13 +91,12 @@ class GitRepository
      */
     public function flush()
     {
-        foreach ($this->objects as $object)
+        foreach ($this->pending as $item)
         {
-            $object->rehash();
-            $this->writeItem($object);
+            $this->writeItem($item);
         }
 
-        $this->objects = array();
+        $this->pending = array();
     }
 
     /**
@@ -467,6 +466,7 @@ class GitRepository
     protected function writeItem(GitItem $item)
     {
         if ($item instanceof GitObject) {
+            $item->rehash();
             $sha1 = Binary::sha1_hex($item->getName());
             $path = sprintf('%s/objects/%s/%s', $this->dir, substr($sha1, 0, 2), substr($sha1, 2));
             if (file_exists($path))
